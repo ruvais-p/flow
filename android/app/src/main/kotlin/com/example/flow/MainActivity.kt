@@ -22,14 +22,11 @@ class MainActivity : FlutterActivity(){
 
         method.setMethodCallHandler { call, result ->
             when (call.method) {
-                "userName" -> {
-                    val userName = call.argument<String>("name")
-                    Toast.makeText(this, "From Native $userName", Toast.LENGTH_LONG).show()
-                    result.success(userName)
-                }
                 "getAllSMS" -> {
                     if (checkSMSPermission()) {
-                        val smsList = getSIBSMSMessages()
+                        val filter = call.argument<String>("filter") ?: ""
+                        val dateParam = call.argument<String>("date")
+                        val smsList = getFilteredSMSMessages(filter, dateParam)
                         result.success(smsList)
                     } else {
                         requestSMSPermission()
@@ -43,31 +40,28 @@ class MainActivity : FlutterActivity(){
         }
     }
 
-    private fun checkSMSPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.READ_SMS
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestSMSPermission() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.READ_SMS),
-            SMS_PERMISSION_REQUEST_CODE
-        )
-    }
-
-    private fun getSIBSMSMessages(): List<Map<String, Any>> {
+    private fun getFilteredSMSMessages(filter: String, dateParam: String?): List<Map<String, Any>> {
         val smsList = mutableListOf<Map<String, Any>>()
-
         try {
             val uri = Uri.parse("content://sms/inbox")
+
+            val selection: String
+            val selectionArgs: Array<String>
+
+            if (!dateParam.isNullOrEmpty()) {
+                val fromDate = dateParam.toLong()
+                selection = "address LIKE ? AND date >= ?"
+                selectionArgs = arrayOf("%$filter%", fromDate.toString())
+            } else {
+                selection = "address LIKE ?"
+                selectionArgs = arrayOf("%$filter%")
+            }
+
             val cursor: Cursor? = contentResolver.query(
                 uri,
                 arrayOf("_id", "address", "body", "date", "type"),
-                "address LIKE ?",
-                arrayOf("%SIBSMS%"),
+                selection,
+                selectionArgs,
                 "date DESC"
             )
 
@@ -81,8 +75,7 @@ class MainActivity : FlutterActivity(){
                 while (c.moveToNext()) {
                     val address = if (addressIndex >= 0) c.getString(addressIndex) else ""
 
-                    // Double-check the address contains "SIBSMS" (case-insensitive)
-                    if (address.uppercase().contains("SIBSMS")) {
+                    if (address.uppercase().contains(filter.uppercase())) {
                         val smsMap = mapOf<String, Any>(
                             "id" to (if (idIndex >= 0) c.getString(idIndex) else ""),
                             "address" to address,
@@ -99,6 +92,22 @@ class MainActivity : FlutterActivity(){
         }
 
         return smsList
+    }
+
+
+    private fun checkSMSPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_SMS
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestSMSPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.READ_SMS),
+            SMS_PERMISSION_REQUEST_CODE
+        )
     }
 
     override fun onRequestPermissionsResult(

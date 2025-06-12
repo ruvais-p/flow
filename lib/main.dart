@@ -1,19 +1,54 @@
-import 'package:flow/homepage.dart';
+import 'package:flow/screens/detaisl.dart';
+import 'package:flow/screens/homepage_screen/provider/provider.dart';
+import 'package:flow/screens/limitset_screen/limit_set_screen.dart';
+import 'package:flow/screens/welcome_screen/welcome_screen.dart';
+import 'package:flow/theme/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flow/screens/homepage_screen/homepage.dart';
+import 'package:flow/screens/creatreinitial_screen/create_initial_database.dart';
+import 'package:flow/services/database_servieces.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Ensure async before runApp
+
+  int? status = await DatabaseService.instance.getUserStatus();
+  int? initiated = await DatabaseService.instance.getInitiatedrStatus();
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => TrendingPageProvider(),
+      child:  MyApp(status: status, initiated:  initiated,),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final int? status;
+  final int? initiated;
 
-  // This widget is the root of your application.
+  const MyApp({super.key, required this.status, required this.initiated});
+
   @override
   Widget build(BuildContext context) {
+    print(">$status");
+    print(">$initiated");
+    Widget homeWidget;
+    if (status == 1 && initiated == 1) {
+      homeWidget = const Homepage();
+    } else if (status == 1 && initiated == 0) {
+      homeWidget = const CreateInitialDatabase();
+    } else {
+      homeWidget = const WelcomeScreen();
+    }
+
     return MaterialApp(
-      title: 'Flutter Demo',
-      home: Homepage()
+      debugShowCheckedModeBanner: true,
+      theme: Apptheme.lightMode,
+      darkTheme: Apptheme.darkMode,
+      //home: Homepage(),
+      home: homeWidget,
+      //home: Detaisl(),
     );
   }
 }
