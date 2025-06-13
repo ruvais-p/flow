@@ -389,4 +389,24 @@ Future<List<Data>> getTodayTransactions() async {
   )).toList();
 }
 
+Future<Map<DateTime, int>> getCalendarDataset() async {
+  final db = await database;
+
+  final result = await db.query('data'); // you can filter by LIMIT or WHERE if needed
+
+  Map<DateTime, int> calendarData = {};
+
+  for (var row in result) {
+    // Parse the date first
+    final dateString = row['date'] as String;
+    final parsed = DateTime.tryParse(dateString);
+    if (parsed != null) {
+      // Here we count transactions per day
+      calendarData[parsed] = (calendarData[parsed] ?? 0) + 1;
+    }
+  }
+  
+  return calendarData;
+}
+
 }
