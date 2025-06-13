@@ -389,24 +389,50 @@ Future<List<Data>> getTodayTransactions() async {
   )).toList();
 }
 
-Future<Map<DateTime, int>> getCalendarDataset() async {
+Future<Map<DateTime, int>> getTransactionCountPerDayFromDb() async {
   final db = await database;
 
-  final result = await db.query('data'); // you can filter by LIMIT or WHERE if needed
+  final result = await db.rawQuery('''
+    SELECT date, COUNT(*) AS transaction_count
+    FROM data
+    GROUP BY date
+  ''');    
 
-  Map<DateTime, int> calendarData = {};
+  final transactionCount = <DateTime, int>{};
 
   for (var row in result) {
-    // Parse the date first
     final dateString = row['date'] as String;
     final parsed = DateTime.tryParse(dateString);
     if (parsed != null) {
-      // Here we count transactions per day
-      calendarData[parsed] = (calendarData[parsed] ?? 0) + 1;
+      // Normalize to start of day
+      final day = DateTime(parsed.year, parsed.month, parsed.day);
+      transactionCount[day] = row['transaction_count'] as int;
     }
   }
   
-  return calendarData;
+  return transactionCount;
 }
+
+Future<DateTime?> getLatestDateTime() async {
+  final db = await DatabaseService.instance.database;
+
+  final result = await db.rawQuery('''
+    SELECT date, time FROM data 
+    WHERE date IS NOT NULL AND time IS NOT NULL 
+    ORDER BY date DESC, time DESC 
+    LIMIT 1
+  ''');
+
+  if (result.isNotEmpty &&
+      result.first['date'] != null &&
+      result.first['time'] != null) {
+    final dateStr = result.first['date'] as String;
+    final timeStr = result.first['time'] as String;
+    return DateTime.parse('$dateStr $timeStr');
+  }
+
+  return null;
+}
+
 
 }
