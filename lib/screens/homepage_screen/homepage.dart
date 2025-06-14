@@ -2,18 +2,14 @@ import 'package:flow/model/data.dart';
 import 'package:flow/model/regex_models/south_indian_bank.dart';
 import 'package:flow/screens/homepage_screen/provider/provider.dart';
 import 'package:flow/screens/homepage_screen/widgets/addressing_segment_future_builder.dart';
+import 'package:flow/screens/homepage_screen/widgets/chart_widget.dart';
 import 'package:flow/screens/homepage_screen/widgets/expenss_animated_container.dart';
 import 'package:flow/screens/homepage_screen/widgets/expenss_showing_widget.dart';
 import 'package:flow/screens/homepage_screen/widgets/heat_map_widget.dart';
-import 'package:flow/screens/homepage_screen/widgets/lastmonth_expenss_chart_widget.dart';
-import 'package:flow/screens/homepage_screen/widgets/monthly_expenss_chart_widget.dart';
-import 'package:flow/screens/homepage_screen/widgets/weakly_expenss_chart_widget.dart';
 import 'package:flow/services/database_servieces.dart';
-import 'package:flow/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -240,9 +236,7 @@ class _HomepageState extends State<Homepage> {
               ),
               const SizedBox(height: 10),
               HeatMapWidget(databaseService: _databaseService),
-              WeeklyChart(),
-              MonthlyChart(),
-              LastMonthChart()
+              ChartWidget(),
             ],
           ),
         ),
@@ -250,4 +244,3 @@ class _HomepageState extends State<Homepage> {
     );
   }
 }
-

@@ -1,6 +1,4 @@
-import 'package:flow/screens/detaisl.dart';
 import 'package:flow/screens/homepage_screen/provider/provider.dart';
-import 'package:flow/screens/limitset_screen/limit_set_screen.dart';
 import 'package:flow/screens/welcome_screen/welcome_screen.dart';
 import 'package:flow/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -15,12 +13,15 @@ void main() async {
   int? status = await DatabaseService.instance.getUserStatus();
   int? initiated = await DatabaseService.instance.getInitiatedrStatus();
 
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => TrendingPageProvider(),
-      child:  MyApp(status: status, initiated:  initiated,),
-    ),
-  );
+runApp(
+  MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => TrendingPageProvider()),
+      ChangeNotifierProvider(create: (_) => ChartTabProvider()),
+    ],
+    child: MyApp(status: status, initiated: initiated),
+  ),
+);
 }
 
 class MyApp extends StatelessWidget {
