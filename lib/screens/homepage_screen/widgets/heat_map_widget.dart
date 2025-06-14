@@ -44,7 +44,7 @@ class HeatMapWidget extends StatelessWidget {
                   height: 30,
                   width: MediaQuery.of(context).size.width - 90,
                   decoration: BoxDecoration(
-                    color: AppColors.whitecolor,
+                    color: Theme.of(context).colorScheme.primary,
                     borderRadius: BorderRadius.circular(10)
                   ),
                 ),
@@ -68,6 +68,7 @@ class HeatMapWidget extends StatelessWidget {
             ],
           );
         },
+        
       ),
     );
   }

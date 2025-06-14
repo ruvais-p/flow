@@ -1,4 +1,6 @@
 import 'package:flow/model/data.dart';
+import 'package:flow/model/weekexpenss.dart';
+import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -432,6 +434,100 @@ Future<DateTime?> getLatestDateTime() async {
   }
 
   return null;
+}
+
+Future<List<WeakExpenss>> fetchWeeklyData(String transactionType) async {
+  final db = await database;
+
+  final result = await db.rawQuery('''
+    SELECT 
+      strftime('%w', date) as weekday, 
+      SUM(amount) as total 
+    FROM data 
+    WHERE transaction_type = ? 
+      AND date >= date('now', '-6 days') 
+    GROUP BY weekday
+  ''', [transactionType]);
+
+  const weekdayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  final Map<String, double> map = { for (var name in weekdayNames) name: 0.0 };
+
+  for (final row in result) {
+    final index = int.tryParse(row['weekday'].toString()) ?? 0;
+    final name = weekdayNames[index];
+    final amount = double.tryParse(row['total'].toString()) ?? 0.0;
+    map[name] = amount;
+  }
+
+  return map.entries.map((e) => WeakExpenss(e.key, e.value)).toList();
+}
+
+Future<List<WeakExpenss>> fetchMonthlyData(String transactionType) async {
+  final db = await database;
+
+  final result = await db.rawQuery('''
+    SELECT 
+      strftime('%d', date) as day, 
+      SUM(amount) as total 
+    FROM data 
+    WHERE transaction_type = ? 
+      AND strftime('%Y-%m', date) = strftime('%Y-%m', 'now') 
+    GROUP BY day
+    ORDER BY day
+  ''', [transactionType]);
+
+  final now = DateTime.now();
+  final currentDay = now.day; // ← only go up to today's date
+
+  // Pre-fill only days from 1 to today
+  final Map<String, double> map = {
+    for (int i = 1; i <= currentDay; i++) i.toString().padLeft(2, '0'): 0.0
+  };
+
+  for (final row in result) {
+    final day = row['day'].toString().padLeft(2, '0');
+    final total = double.tryParse(row['total'].toString()) ?? 0.0;
+    map[day] = total;
+  }
+
+  return map.entries
+      .map((e) => WeakExpenss(e.key, e.value))
+      .toList();
+}
+
+Future<List<WeakExpenss>> fetchLastMonthData(String transactionType) async {
+  final db = await database;
+
+  final result = await db.rawQuery('''
+    SELECT 
+      strftime('%d', date) as day, 
+      SUM(amount) as total 
+    FROM data 
+    WHERE transaction_type = ? 
+      AND strftime('%Y-%m', date) = strftime('%Y-%m', 'now', '-1 month') 
+    GROUP BY day
+    ORDER BY day
+  ''', [transactionType]);
+
+  // Calculate total days in last month
+  final now = DateTime.now();
+  final DateTime lastMonth = DateTime(now.year, now.month - 1, 1);
+  final daysInLastMonth = DateUtils.getDaysInMonth(lastMonth.year, lastMonth.month);
+
+  // Pre-fill all days of last month
+  final Map<String, double> map = {
+    for (int i = 1; i <= daysInLastMonth; i++) i.toString().padLeft(2, '0'): 0.0
+  };
+
+  for (final row in result) {
+    final day = row['day'].toString().padLeft(2, '0');
+    final total = double.tryParse(row['total'].toString()) ?? 0.0;
+    map[day] = total;
+  }
+
+  return map.entries
+      .map((e) => WeakExpenss(e.key, e.value))
+      .toList();
 }
 
 
