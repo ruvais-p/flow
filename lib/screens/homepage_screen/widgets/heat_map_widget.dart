@@ -1,4 +1,5 @@
 
+import 'package:flow/screens/homepage_screen/services/homepage_db_services.dart';
 import 'package:flow/services/database_servieces.dart';
 import 'package:flow/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +8,10 @@ import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 class HeatMapWidget extends StatelessWidget {
   const HeatMapWidget({
     super.key,
-    required DatabaseService databaseService,
+    required HomepageDbServices databaseService,
   }) : _databaseService = databaseService;
 
-  final DatabaseService _databaseService;
+  final HomepageDbServices _databaseService;
 
   @override
   Widget build(BuildContext context) {

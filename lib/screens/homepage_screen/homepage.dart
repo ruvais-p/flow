@@ -1,6 +1,7 @@
 import 'package:flow/model/data.dart';
 import 'package:flow/model/regex_models/south_indian_bank.dart';
 import 'package:flow/screens/homepage_screen/provider/provider.dart';
+import 'package:flow/screens/homepage_screen/services/homepage_db_services.dart';
 import 'package:flow/screens/homepage_screen/widgets/addressing_segment_future_builder.dart';
 import 'package:flow/screens/homepage_screen/widgets/chart_widget.dart';
 import 'package:flow/screens/homepage_screen/widgets/expenss_animated_container.dart';
@@ -21,6 +22,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   final PageController _pageController = PageController(viewportFraction: 0.8);
   final DatabaseService _databaseService = DatabaseService.instance;
+  final HomepageDbServices _homepageDbServices = HomepageDbServices.instance;
   static const platform = MethodChannel('uniqueChannel');
   
   List<Map<String, dynamic>> _smsMessages = [];
@@ -55,8 +57,8 @@ class _HomepageState extends State<Homepage> {
       });
       
       await fetchSmsMessages(); // Await full insert
-      final recent = await _databaseService.getRecentTransactions();
-      final today = await _databaseService.getTodayTransactions();
+      final recent = await _homepageDbServices.getRecentTransactions();
+      final today = await _homepageDbServices.getTodayTransactions();
       
       setState(() {
         _isLoading = false;
@@ -75,7 +77,7 @@ class _HomepageState extends State<Homepage> {
   Future<void> fetchSmsMessages() async {
     try {
       final filterString = await _databaseService.getBankCode();
-      final DateTime? afterDate = await _databaseService.getLatestDateTime();
+      final DateTime? afterDate = await _homepageDbServices.getLatestDateTime();
 
       final List<dynamic> result = await platform.invokeMethod(
         'getAllSMS',
@@ -150,7 +152,7 @@ class _HomepageState extends State<Homepage> {
             children: [
               AddressingSegmentFutureBuilder(databaseService: _databaseService),
               const SizedBox(height: 20),
-              ExpenssShowingWidget(databaseService: _databaseService),
+              ExpenssShowingWidget(databaseService: _homepageDbServices),
               const SizedBox(height: 10),
               SizedBox(
                 height: 280, // Fixed height to contain both title and PageView
@@ -235,7 +237,7 @@ class _HomepageState extends State<Homepage> {
                 ),
               ),
               const SizedBox(height: 10),
-              HeatMapWidget(databaseService: _databaseService),
+              HeatMapWidget(databaseService: _homepageDbServices),
               ChartWidget(),
             ],
           ),

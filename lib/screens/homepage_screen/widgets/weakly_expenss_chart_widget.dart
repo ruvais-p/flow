@@ -1,5 +1,5 @@
 import 'package:flow/model/weekexpenss.dart';
-import 'package:flow/services/database_servieces.dart';
+import 'package:flow/screens/homepage_screen/services/homepage_db_services.dart';
 import 'package:flow/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -7,7 +7,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 class WeeklyChart extends StatelessWidget {
   WeeklyChart({super.key});
 
-  final DatabaseService _databaseService = DatabaseService.instance;
+  final HomepageDbServices _databaseService = HomepageDbServices.instance;
 
   Future<Map<String, List<WeakExpenss>>> getChartData() async {
     final debitData = await _databaseService.fetchWeeklyData('DEBIT');

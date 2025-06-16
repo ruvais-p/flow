@@ -1,4 +1,5 @@
 
+import 'package:flow/screens/homepage_screen/services/homepage_db_services.dart';
 import 'package:flow/screens/homepage_screen/widgets/expenss_shower_widget.dart';
 import 'package:flow/services/database_servieces.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +7,10 @@ import 'package:flutter/material.dart';
 class ExpenssShowingWidget extends StatelessWidget {
   const ExpenssShowingWidget({
     super.key,
-    required DatabaseService databaseService,
+    required HomepageDbServices databaseService,
   }) : _databaseService = databaseService;
 
-  final DatabaseService _databaseService;
+  final HomepageDbServices _databaseService;
 
   @override
   Widget build(BuildContext context) {
