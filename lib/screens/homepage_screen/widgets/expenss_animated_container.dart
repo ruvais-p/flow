@@ -67,7 +67,7 @@ class BuildAnimatedCard{
                     color: index == currentPage ? AppColors.lightred : AppColors.darkred,
                     borderRadius: BorderRadius.circular(40),
                   ),
-                  child: Text("Food", style: Theme.of(context).textTheme.displaySmall!.copyWith(color: AppColors.lightgray, fontWeight: FontWeight.bold,),),
+                  child: Text(data.category, style: Theme.of(context).textTheme.displaySmall!.copyWith(color: AppColors.lightgray, fontWeight: FontWeight.bold,),),
                 ),
                 Container(
                   width: 50,

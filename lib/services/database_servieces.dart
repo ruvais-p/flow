@@ -313,8 +313,8 @@ Future<Map<String, double>> getTodayAndMonthTotals() async {
   // TODAY
   final todayResult = await db.rawQuery('''
     SELECT
-      IFNULL(SUM(CASE WHEN transaction_type = 'CREDIT' THEN amount ELSE 0 END), 0) as todayCredited,
-      IFNULL(SUM(CASE WHEN transaction_type = 'DEBIT' THEN amount ELSE 0 END), 0) as todayDebited
+      IFNULL(SUM(CASE WHEN transaction_type = 'CREDIT' THEN CAST(amount AS REAL) ELSE 0 END), 0) AS todayCredited,
+      IFNULL(SUM(CASE WHEN transaction_type = 'DEBIT' THEN CAST(amount AS REAL) ELSE 0 END), 0) AS todayDebited
     FROM data
     WHERE date = ?
   ''', [today]);
@@ -322,19 +322,20 @@ Future<Map<String, double>> getTodayAndMonthTotals() async {
   // THIS MONTH
   final monthResult = await db.rawQuery('''
     SELECT
-      IFNULL(SUM(CASE WHEN transaction_type = 'CREDIT' THEN amount ELSE 0 END), 0) as monthCredited,
-      IFNULL(SUM(CASE WHEN transaction_type = 'DEBIT' THEN amount ELSE 0 END), 0) as monthDebited
+      IFNULL(SUM(CASE WHEN transaction_type = 'CREDIT' THEN CAST(amount AS REAL) ELSE 0 END), 0) AS monthCredited,
+      IFNULL(SUM(CASE WHEN transaction_type = 'DEBIT' THEN CAST(amount AS REAL) ELSE 0 END), 0) AS monthDebited
     FROM data
     WHERE date >= ? AND date <= ?
   ''', [monthStart, today]);
 
   return {
-    'todayCredited': (todayResult.first['todayCredited'] as num).toDouble(),
-    'todayDebited': (todayResult.first['todayDebited'] as num).toDouble(),
-    'monthCredited': (monthResult.first['monthCredited'] as num).toDouble(),
-    'monthDebited': (monthResult.first['monthDebited'] as num).toDouble(),
+    'todayCredited': (todayResult.first['todayCredited'] as num).toDouble(), 
+    'todayDebited': (todayResult.first['todayDebited'] as num).toDouble(), 
+    'monthCredited': (monthResult.first['monthCredited'] as num).toDouble(), 
+    'monthDebited': (monthResult.first['monthDebited'] as num).toDouble(), 
   };
 }
+
 
 // 1) Get 10 most recent transactions
 Future<List<Data>> getRecentTransactions({int limit = 10}) async {

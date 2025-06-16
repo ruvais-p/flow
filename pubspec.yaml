@@ -44,6 +44,8 @@ dependencies:
   intl: ^0.18.1
   flutter_heatmap_calendar: ^1.0.5
   syncfusion_flutter_charts: ^29.2.10
+  flutter_gemini: ^3.0.0
+  http: ^1.4.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

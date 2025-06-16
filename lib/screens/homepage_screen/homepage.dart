@@ -124,7 +124,7 @@ class _HomepageState extends State<Homepage> {
               time: parsedData['time'],
               consumer: parsedData['consumer'],
               transactionType: parsedData['mode'],
-              category: "unknown",
+              category: parsedData['category'],
               upiid: parsedData['upiid'] ?? '',
               bank: "SIB"
             );

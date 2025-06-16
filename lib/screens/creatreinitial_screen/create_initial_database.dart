@@ -79,15 +79,15 @@ class _CreateInitialDatabaseState extends State<CreateInitialDatabase> {
         if (parsedData != null) {
           await _databaseService.insertTransaction(
             message: body,
-            amount: parsedData['amount'],
-            balance: parsedData['balance'],
+            amount: double.tryParse(parsedData['amount'].toString()) ?? 0.0,
+            balance: double.tryParse(parsedData['balance'].toString()) ?? 0.0,
             date: parsedData['date'],
             time: parsedData['time'],
             consumer: parsedData['consumer'],
             transactionType: parsedData['mode'],
-            category: "unknown",
+            category: parsedData['category'],
             upiid: parsedData['upiid'] ?? '',
-            bank: "SIB"
+            bank: "SIB",
           );
         }
       }

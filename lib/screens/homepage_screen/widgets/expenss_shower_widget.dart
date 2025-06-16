@@ -19,11 +19,11 @@ class ExpenssShower extends StatelessWidget {
       children: [
         Column(
           children: [
-            ExpenssShowerContainer(isCreated: true, heading: "Debited", amount: todayDebited.toString(),),
+            ExpenssShowerContainer(isCreated: true, heading: "Debited", amount: todayDebited,),
             Text("Today", style: Theme.of(context).textTheme.displaySmall!.copyWith(
               color: AppColors.darkred
             ),),
-            ExpenssShowerContainer(isCreated: false, heading: "Credited", amount: todayCredited.toString(),),
+            ExpenssShowerContainer(isCreated: false, heading: "Credited", amount: todayCredited,),
           ],
         ),
         CircleAvatar(
@@ -33,11 +33,11 @@ class ExpenssShower extends StatelessWidget {
         ),
         Column(
           children: [
-            ExpenssShowerContainer(isCreated: true, heading: "Debited", amount: thismonthDebited.toString(),),
+            ExpenssShowerContainer(isCreated: true, heading: "Debited", amount: thismonthDebited,),
             Text("This month", style: Theme.of(context).textTheme.displaySmall!.copyWith(
               color: AppColors.darkred
             ),),
-            ExpenssShowerContainer(isCreated: false, heading: "Credited", amount: thismonthCredited.toString(),),
+            ExpenssShowerContainer(isCreated: false, heading: "Credited", amount: thismonthCredited,),
           ],
         ),
       ],

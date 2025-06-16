@@ -158,6 +158,9 @@ Map<String, dynamic>? parseSouthIndianBankSms(String message, DateTime timestamp
     time = '${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}:${timestamp.second.toString().padLeft(2, '0')}';
   }
   
+  // Category determination based on consumer name and message content
+  String category = _determineCategory(consumer, message);
+  
   // Enhanced validation - return null if no meaningful data was extracted
   if (amount == null && balance == null && upiid == null && consumer == null && mode == null) {
     return null;
@@ -171,7 +174,160 @@ Map<String, dynamic>? parseSouthIndianBankSms(String message, DateTime timestamp
     'mode': mode,
     'date': date,
     'time': time,
+    'category': category,
     // Add debug info for troubleshooting (remove in production)
     '_raw_message': message, // For debugging
   };
+}
+
+String _determineCategory(String? consumer, String message) {
+  if (consumer == null) {
+    // Check message content for ATM withdrawal patterns
+    if (message.toLowerCase().contains('atm') || 
+        message.toLowerCase().contains('cash withdrawal') ||
+        message.toLowerCase().contains('withdrawal')) {
+      return 'ATM Withdrawal';
+    }
+    return 'Other';
+  }
+  
+  final lowerConsumer = consumer.toLowerCase();
+  final lowerMessage = message.toLowerCase();
+  
+  // Travel & Transportation
+  if (_containsAny(lowerConsumer, [
+    'irctc', 'uts', 'kmrl', 'metro', 'transport', 'railway', 'train',
+    'bus', 'taxi', 'uber', 'ola', 'rapido', 'auto', 'cab', 'redbus',
+    'ksrtc', 'rtc', 
+  ])) {
+    return 'Transportation';
+  }
+  
+  // Food & Dining (Online food delivery)
+  if (_containsAny(lowerConsumer, [
+    'swiggy', 'zomato', 'uber eats', 'ubereats', 'foodpanda', 'dominos',
+    'pizza hut', 'kfc', 'mcdonalds', 'burger king', 'subway',
+    'dunzo', 'food delivery', 'restaurant', 'cafe', 'hotel',
+    'biryani', 'food', 'eat', 'dine', 'mandi', 'bakes', 'bakery','juice', 'ice cream', 'peni', 
+    'cusat rest', 'rest', 'thattukada', 'food', 'food court', 'tea', 'coffee',
+    'tea shop',  
+  ])) {
+    return 'Food & Dining';
+  }
+  
+  // Groceries & Essentials
+  if (_containsAny(lowerConsumer, [
+    'instamart', 'zepto', 'blinkit', 'grofers', 'bigbasket', 'naturebasket', 'jio mart'
+    'grocery', 'supermarket', 'hypermarket', 'fresh', 'organic',
+    'vegetables', 'fruits', 'milk', 'bread', 'essentials',
+    'dmart', 'reliance fresh', 'spencer', 'more', 'star bazaar',
+    'easyday', 'nilgiris', 'knh', 'store', 'trade', 'mart', 'hypermarket', 'market', 'grocery', 
+  ])) {
+    return 'Groceries';
+  }
+  
+  // Healthcare
+  if (_containsAny(lowerConsumer, [
+    'medical', 'pharmacy', 'drugs', 'clinic', 'hospital', 'doctor',
+    'apollo', 'fortis', 'max', 'medplus', 'netmeds', 'pharmeasy',
+    '1mg', 'healthcare', 'health', 'medicine', 'diagnostic',
+    'lab', 'pathology', 'dental', 'eye care', 'physiotherapy', 'medi',
+  ])) {
+    return 'Healthcare';
+  }
+  
+  // Online Shopping & E-commerce
+  if (_containsAny(lowerConsumer, [
+    'amazon', 'flipkart', 'myntra', 'ajio', 'nykaa', 'meesho',
+    'paytm mall', 'tata cliq', 'snapdeal', 'shopclues', 'limeroad',
+    'jabong', 'koovs', 'bewakoof', 'urban ladder', 'pepperfry',
+    'online', 'ecommerce',
+  ])) {
+    return 'Online Shopping';
+  }
+  
+  // Utilities
+  if (_containsAny(lowerConsumer, [
+    'electricity', 'water', 'gas', 'internet', 'mobile', 'broadband',
+    'wifi', 'telecom', 'airtel', 'jio', 'vi', 'vodafone', 'idea',
+    'bsnl', 'mtnl', 'tata sky', 'dish tv', 'sun direct', 'videocon',
+    'bescom', 'kseb', 'tneb', 'mseb', 'pseb', 'wbsedcl', 'cesc',
+    'bill payment', 'recharge', 'postpaid', 'prepaid', 'indian' , 'bharath', 
+  ])) {
+    return 'Utilities';
+  }
+  
+  // Entertainment
+  if (_containsAny(lowerConsumer, [
+    'netflix', 'prime video', 'hotstar', 'zee5', 'sonyliv', 'voot',
+    'spotify', 'youtube', 'music', 'gaming', 'steam', 'playstation',
+    'xbox', 'movie', 'cinema', 'theatre', 'bookmyshow', 'paytm movies',
+    'entertainment', 'subscription', 'ott', 'streaming', 'spotify', 'turf', 'pvr', 'cinepolis', 'film'
+  ])) {
+    return 'Entertainment';
+  }
+  
+  // Education
+  if (_containsAny(lowerConsumer, [
+    'school', 'college', 'university', 'education', 'course', 'fees', 'fee',
+    'tuition', 'coaching', 'byju', 'unacademy', 'vedantu', 'extramarks',
+    'toppr', 'study', 'learning', 'books', 'exam', 'test', 'certification'
+  ])) {
+    return 'Education';
+  }
+  
+  // Investment & Financial Services
+  if (_containsAny(lowerConsumer, [
+    'mutual fund', 'sip', 'investment', 'stock', 'equity', 'trading',
+    'zerodha', 'groww', 'upstox', 'angel broking', 'hdfc securities',
+    'icici direct', 'kotak securities', 'sharekhan', 'edelweiss',
+    'nippon', 'aditya birla', 'sbi mutual', 'hdfc fund', 'icici prudential'
+  ])) {
+    return 'Investment';
+  }
+  
+  // Insurance
+  if (_containsAny(lowerConsumer, [
+    'insurance', 'premium', 'policy', 'lic', 'hdfc life', 'icici lombard',
+    'bajaj allianz', 'max life', 'sbi life', 'tata aig', 'reliance general',
+    'star health', 'care insurance', 'health insurance', 'motor insurance'
+  ])) {
+    return 'Insurance';
+  }
+  
+  // Shopping (Physical stores, retail)
+  if (_containsAny(lowerConsumer, [
+    'mall', 'retail', 'fashion', 'clothing', 'electronics', 'mobile', 'textile', 'silks', 'sarees','mens', 'womens',
+    'laptop', 'accessories', 'jewelry', 'gold', 'silver', 'watch', 
+    'footwear', 'bags', 'cosmetics', 'beauty', 'salon', 'spa'
+  ])) {
+    return 'Shopping';
+  }
+  
+  // Check for Transfer patterns in message
+  if (_containsAny(lowerMessage, [
+    'transfer', 'transferred', 'sent to', 'received from', 'p2p',
+    'person to person', 'friend', 'family', 'split', 'settle'
+  ])) {
+    return 'Transfer';
+  }
+  
+  // Check for ATM Withdrawal patterns
+  if (_containsAny(lowerMessage, [
+    'atm', 'cash withdrawal', 'withdrawal', 'cash', 'atm withdrawal'
+  ])) {
+    return 'ATM Withdrawal';
+  }
+
+  //check for Oil patterns
+  if (_containsAny(lowerMessage, [
+    'oil', 'gas', 'pump', 'petrol', 'diesel', 'fuel', 'petroleum', 'petrol pump', 'hp', 'essar', 'nayara', 
+  ])) {
+    return 'Oil&Gas';
+  }
+  return 'Other';
+}
+
+bool _containsAny(String text, List<String> keywords) {
+  return keywords.any((keyword) => text.contains(keyword));
 }

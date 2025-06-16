@@ -9,7 +9,7 @@ class ExpenssShowerContainer extends StatelessWidget {
   });
   final bool isCreated;
   final String heading;
-  final String amount;
+  final double amount;
 
   @override
   Widget build(BuildContext context) {
