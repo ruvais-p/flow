@@ -1,5 +1,4 @@
 import 'package:flow/model/regex_models/south_indian_bank.dart';
-import 'package:flow/screens/detaisl.dart';
 import 'package:flow/screens/limitset_screen/limit_set_screen.dart';
 import 'package:flow/services/database_servieces.dart';
 import 'package:flow/theme/colors.dart';

@@ -1,4 +1,4 @@
-import 'package:flow/screens/detaisl.dart';
+
 import 'package:flow/screens/homepage_screen/homepage.dart';
 import 'package:flow/screens/limitset_screen/widgets/basic_container_widget.dart';
 import 'package:flow/services/database_servieces.dart';

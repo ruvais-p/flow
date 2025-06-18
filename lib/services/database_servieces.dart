@@ -1,6 +1,4 @@
 import 'package:flow/model/data.dart';
-import 'package:flow/model/weekexpenss.dart';
-import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
