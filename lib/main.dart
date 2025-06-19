@@ -1,3 +1,4 @@
+import 'package:flow/screens/history_screen/provider/history_provider.dart';
 import 'package:flow/screens/homepage_screen/provider/provider.dart';
 import 'package:flow/screens/welcome_screen/welcome_screen.dart';
 import 'package:flow/theme/theme.dart';
@@ -21,7 +22,8 @@ runApp(
     providers: [
       ChangeNotifierProvider(create: (_) => TrendingPageProvider()),
       ChangeNotifierProvider(create: (_) => ChartTabProvider()),
-      ChangeNotifierProvider(create: (_) => TransactionListProvider())
+      ChangeNotifierProvider(create: (_) => TransactionListProvider()),
+      ChangeNotifierProvider(create: (_) => HistoryProvider()),
     ],
     child: MyApp(status: status, initiated: initiated),
   ),

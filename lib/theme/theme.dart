@@ -13,6 +13,7 @@ class Apptheme {
     ),
     textTheme: AppTextTheme.lighTextTheme,
     scaffoldBackgroundColor: AppColors.lightbackgroung,
+    
   );
 
   static ThemeData darkMode = ThemeData(

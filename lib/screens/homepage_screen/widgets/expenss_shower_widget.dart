@@ -1,4 +1,5 @@
 
+import 'package:flow/screens/history_screen/history_screen.dart';
 import 'package:flow/screens/homepage_screen/widgets/expenss_shower_container_widget.dart';
 import 'package:flow/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,9 @@ class ExpenssShower extends StatelessWidget {
         CircleAvatar(
           radius: width * 0.0509,
           backgroundColor: AppColors.lightred,
-          child: IconButton(onPressed: (){}, icon: Icon(Icons.history, color: AppColors.whitecolor,)),
+          child: IconButton(onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const HistoryScreen()));
+          }, icon: Icon(Icons.history, color: AppColors.whitecolor,)),
         ),
         Column(
           children: [
