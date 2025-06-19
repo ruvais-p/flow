@@ -10,15 +10,23 @@ class BuildAnimatedCard{
   return DateFormat("hh:mm a").format(parsedTime);
 }
 
- static Widget buildAnimatedCard(int index, int currentPage, Data data, BuildContext context) {
-    bool isCurrent = index == currentPage;
-
-    
-
-    return GestureDetector(
-      onTap: (){
-        showCategoryDialog(context, data.id ?? 0);
-      },
+static Widget buildAnimatedCard(
+  int index,
+  int currentPage,
+  Data data,
+  BuildContext context,
+  VoidCallback onCategoryUpdated,
+) {
+  bool isCurrent = index == currentPage;
+  return GestureDetector(
+    onTap: () {
+      showCategoryDialog(
+        context,
+        data.id ?? 0,
+        data.category,
+        onCategoryUpdated,
+      );
+    },
       child: AnimatedContainer(
         width: MediaQuery.of(context).size.width * 0.45,
         height: MediaQuery.of(context).size.width * 0.45,

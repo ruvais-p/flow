@@ -190,14 +190,19 @@ class _HomepageState extends State<Homepage> {
                     } else {
                       final todayList = snapshot.data![0];
                       final recentList = snapshot.data![1];
-                
+
                       final transactionList = todayList.length < 5 ? recentList : todayList;
                       final title = todayList.length < 5 ? "Recent flows" : "Today's flow";
-                      
+
+                      // ✅ Update provider for PageView to render data
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        Provider.of<TransactionListProvider>(context, listen: false)
+                            .setTransactions(transactionList);
+                      });
+
                       if (transactionList.isEmpty) {
                         return const Center(child: Text('No transactions available'));
                       }
-                
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -213,23 +218,24 @@ class _HomepageState extends State<Homepage> {
                           ),
                           // PageView section with fixed height
                           Expanded(
-                            child: Consumer<TrendingPageProvider>(
-                              builder: (context, provider, child) {
+                            child: Consumer2<TrendingPageProvider, TransactionListProvider>(
+                              builder: (context, trendingProvider, txProvider, child) {
                                 return PageView.builder(
-                                  itemCount: transactionList.length,
+                                  itemCount: txProvider.transactionList.length,
                                   controller: _pageController,
-                                  onPageChanged: _onPageChanged,
+                                  onPageChanged: (index) => trendingProvider.currentPage = index,
                                   itemBuilder: (context, index) =>
-                                      BuildAnimatedCard.buildAnimatedCard(
-                                        index, 
-                                        provider.currentPage, 
-                                        transactionList[index], 
-                                        context
-                                      ),
+                                    BuildAnimatedCard.buildAnimatedCard(
+                                      index,
+                                      trendingProvider.currentPage,
+                                      txProvider.transactionList[index],
+                                      context,
+                                      () {}, // You can leave empty if you’re using Provider updates now
+                                    ),
                                 );
                               },
                             ),
-                          ),
+                          )
                         ],
                       );
                     }

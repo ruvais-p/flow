@@ -21,6 +21,7 @@ runApp(
     providers: [
       ChangeNotifierProvider(create: (_) => TrendingPageProvider()),
       ChangeNotifierProvider(create: (_) => ChartTabProvider()),
+      ChangeNotifierProvider(create: (_) => TransactionListProvider())
     ],
     child: MyApp(status: status, initiated: initiated),
   ),

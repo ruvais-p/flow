@@ -7,7 +7,7 @@ class Data {
   final double? balance;   // nullable double
   final String consumer;
   final String callname;
-  final String category;
+  String category;
   final String upiid;
   final String transactionType;
   final String bank;
