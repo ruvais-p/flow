@@ -1,4 +1,5 @@
 import 'package:flow/screens/homepage_screen/provider/provider.dart';
+import 'package:flow/screens/homepage_screen/widgets/last_weak_expenss_chart.dart';
 import 'package:flow/screens/homepage_screen/widgets/lastmonth_expenss_chart_widget.dart';
 import 'package:flow/screens/homepage_screen/widgets/monthly_expenss_chart_widget.dart';
 import 'package:flow/screens/homepage_screen/widgets/weakly_expenss_chart_widget.dart';
@@ -9,8 +10,8 @@ import 'package:provider/provider.dart';
 class ChartWidget extends StatelessWidget {
   ChartWidget({super.key});
 
-  final List<String> titles = ["This week", "This month", "Last month"];
-  final List<Widget> charts = [WeeklyChart(), MonthlyChart(), LastMonthChart()];
+  final List<String> titles = ["This week", "Last week", "This month", "Last month"];
+  final List<Widget> charts = [WeeklyChart(), LastWeekChart(),MonthlyChart(), LastMonthChart()];
 
   @override
   Widget build(BuildContext context) {

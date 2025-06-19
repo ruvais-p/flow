@@ -93,11 +93,12 @@ Future<List<WeakExpenss>> fetchWeeklyData(String transactionType) async {
 
   final result = await db.rawQuery('''
     SELECT 
-      strftime('%w', date) as weekday, 
-      SUM(amount) as total 
+      strftime('%w', date) AS weekday, 
+      SUM(amount) AS total 
     FROM data 
     WHERE transaction_type = ? 
-      AND date >= date('now', '-6 days') 
+      AND strftime('%W', date) = strftime('%W', 'now') 
+      AND strftime('%Y', date) = strftime('%Y', 'now') 
     GROUP BY weekday
   ''', [transactionType]);
 
@@ -113,6 +114,35 @@ Future<List<WeakExpenss>> fetchWeeklyData(String transactionType) async {
 
   return map.entries.map((e) => WeakExpenss(e.key, e.value)).toList();
 }
+
+Future<List<WeakExpenss>> fetchLastWeekData(String transactionType) async {
+  final db = await database;
+
+  final result = await db.rawQuery('''
+    SELECT 
+      strftime('%w', date) AS weekday, 
+      SUM(amount) AS total 
+    FROM data 
+    WHERE transaction_type = ? 
+      AND strftime('%W', date) = strftime('%W', 'now', '-7 days') 
+      AND strftime('%Y', date) = strftime('%Y', 'now', '-7 days') 
+    GROUP BY weekday
+  ''', [transactionType]);
+
+  const weekdayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  final Map<String, double> map = { for (var name in weekdayNames) name: 0.0 };
+
+  for (final row in result) {
+    final index = int.tryParse(row['weekday'].toString()) ?? 0;
+    final name = weekdayNames[index];
+    final amount = double.tryParse(row['total'].toString()) ?? 0.0;
+    map[name] = amount;
+  }
+
+  return map.entries.map((e) => WeakExpenss(e.key, e.value)).toList();
+}
+
+
 
 
 Future<DateTime?> getLatestDateTime() async {
@@ -178,6 +208,7 @@ Future<List<Data>> getTodayTransactions() async {
   );
   
   return result.map((e) => Data(
+    id : e['id'] as int,
     date: e['date'] as String? ?? '',
     time: e['time'] as String? ?? '',
     message: e['message'] as String? ?? '',
@@ -204,6 +235,7 @@ Future<List<Data>> getRecentTransactions({int limit = 10}) async {
   );
   
   return result.map((e) => Data(
+    id : e['id'] as int,
     date: e['date'] as String? ?? '',
     time: e['time'] as String? ?? '',
     message: e['message'] as String? ?? '',
@@ -250,6 +282,16 @@ Future<Map<String, double>> getTodayAndMonthTotals() async {
     'monthCredited': (monthResult.first['monthCredited'] as num).toDouble(), 
     'monthDebited': (monthResult.first['monthDebited'] as num).toDouble(), 
   };
+}
+
+ Future<void> updateCategoryInDb(int id, String category) async {
+  final db = await database;
+  await db.update(
+    'data',
+    {'category': category},
+    where: 'id = ?',
+    whereArgs: [id],
+  );
 }
 
 }

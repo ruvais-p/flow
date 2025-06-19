@@ -1,4 +1,5 @@
 class Data {
+  final int? id;
   final String date;
   final String time;
   final String message;
@@ -11,7 +12,8 @@ class Data {
   final String transactionType;
   final String bank;
 
-  Data({
+  Data( {
+    this.id,
     required this.date,
     required this.time,
     required this.message,
@@ -27,6 +29,7 @@ class Data {
 
   factory Data.fromMap(Map<String, dynamic> map) {
     return Data(
+      id :map['id'] ?? 0,
       date: map['date'] ?? '',
       time: map['time'] ?? '',
       message: map['message'] ?? '',

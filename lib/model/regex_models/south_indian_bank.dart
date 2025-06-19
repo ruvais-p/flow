@@ -323,7 +323,7 @@ String _determineCategory(String? consumer, String message) {
   if (_containsAny(lowerMessage, [
     'oil', 'gas', 'pump', 'petrol', 'diesel', 'fuel', 'petroleum', 'petrol pump', 'hp', 'essar', 'nayara', 
   ])) {
-    return 'Oil&Gas';
+    return 'Oil & Gas';
   }
   return 'Other';
 }
