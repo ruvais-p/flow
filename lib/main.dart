@@ -23,8 +23,7 @@ runApp(
       ChangeNotifierProvider(create: (_) => TrendingPageProvider()),
       ChangeNotifierProvider(create: (_) => ChartTabProvider()),
       ChangeNotifierProvider(create: (_) => TransactionListProvider()),
-      ChangeNotifierProvider(create: (_) => HistoryProvider()),
-      ChangeNotifierProvider(create: (_) => HistoryDataProvider()..loadTransactionsForSelectedMonth()),
+      ChangeNotifierProvider(create: (_) => HistoryDataProvider())
     ],
     child: MyApp(status: status, initiated: initiated),
   ),
