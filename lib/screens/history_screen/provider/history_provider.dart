@@ -31,6 +31,7 @@ class HistoryDataProvider extends ChangeNotifier {
     monthlyTransactions = await HistoryDBServices.instance.getTransactionsForMonth(selectedDate);
     calculateTotals();
     notifyListeners();
+    
   }
 
   void calculateTotals() {
@@ -48,6 +49,8 @@ class HistoryDataProvider extends ChangeNotifier {
 
   Future<void> updateCategory(int id, String newCategory) async {
     await HistoryDBServices.instance.updateTransactionCategory(id, newCategory);
+    loadTransactionsForSelectedMonth();
+    notifyListeners();
   }
 
   void updateTransactionCategory(int id, String newCategory) {

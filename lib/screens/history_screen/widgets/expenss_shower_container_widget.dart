@@ -1,5 +1,5 @@
 
-import 'package:flow/common/alert_box_for_categories_changing.dart';
+import 'package:flow/common/dialog_history.dart';
 import 'package:flow/model/data.dart';
 import 'package:flow/screens/history_screen/provider/history_provider.dart';
 import 'package:flow/theme/colors.dart';
@@ -23,7 +23,7 @@ class ExpenssShowerContainerWidget extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        showCategoryDialog(context, data.id ?? 0, data.category, (){});
+        showHistoryCategoryDialog(context, data.id ?? 0, data.category, () {});
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),

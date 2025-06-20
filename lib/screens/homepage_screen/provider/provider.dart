@@ -21,6 +21,7 @@ class TrendingPageProvider with ChangeNotifier {
     if (_currentPage != index) {
       _currentPage = index;
       notifyListeners();
+
     }
   }
 }
@@ -54,5 +55,6 @@ class TransactionListProvider with ChangeNotifier {
       _transactionList[index].category = newCategory;
       notifyListeners();
     }
+
   }
 }
