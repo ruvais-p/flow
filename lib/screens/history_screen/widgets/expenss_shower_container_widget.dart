@@ -1,11 +1,9 @@
 
 import 'package:flow/common/dialog_history.dart';
 import 'package:flow/model/data.dart';
-import 'package:flow/screens/history_screen/provider/history_provider.dart';
 import 'package:flow/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 class ExpenssShowerContainerWidget extends StatelessWidget {
   final Data data;

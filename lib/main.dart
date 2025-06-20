@@ -1,3 +1,4 @@
+import 'package:flow/screens/history_screen/history_screen.dart';
 import 'package:flow/screens/history_screen/provider/history_provider.dart';
 import 'package:flow/screens/homepage_screen/provider/provider.dart';
 import 'package:flow/screens/welcome_screen/welcome_screen.dart';
@@ -51,8 +52,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: true,
       theme: Apptheme.lightMode,
       darkTheme: Apptheme.darkMode,
-      //home: Homepage(),
-      home: homeWidget,
+      home: HistoryScreen(),
+      //home: homeWidget,
       //home: MessageParserPage(),
     );
   }

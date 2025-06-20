@@ -60,4 +60,37 @@ class HistoryDataProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Map<String, double> get debitCategoryPieData {
+  final Map<String, double> dataMap = {};
+  for (var item in monthlyTransactions) {
+    if (item.transactionType.toLowerCase() == 'debit') {
+      dataMap[item.category] = (dataMap[item.category] ?? 0) + (item.amount ?? 0);
+    }
+  }
+  return dataMap;
+}
+
+Map<String, double> get creditCategoryPieData {
+  final Map<String, double> dataMap = {};
+  for (var item in monthlyTransactions) {
+    if (item.transactionType.toLowerCase() == 'credit') {
+      dataMap[item.category] = (dataMap[item.category] ?? 0) + (item.amount ?? 0);
+    }
+  }
+  return dataMap;
+}
+
+
+  int _selectedIndex = 0;
+
+  int get selectedIndex => _selectedIndex;
+
+  void setIndex(int index) {
+    if (_selectedIndex != index) {
+      _selectedIndex = index;
+      notifyListeners();
+    }
+  }
+
 }

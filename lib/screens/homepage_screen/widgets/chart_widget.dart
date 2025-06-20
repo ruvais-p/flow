@@ -17,7 +17,7 @@ class ChartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final chartProvider = context.watch<ChartTabProvider>();
     final selectedChartIndex = chartProvider.selectedIndex;
-
+    
     return Column(
       children: [
         SizedBox(
