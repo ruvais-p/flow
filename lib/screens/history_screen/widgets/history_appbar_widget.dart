@@ -3,12 +3,11 @@ import 'package:flow/screens/history_screen/widgets/circular_ionbutton_history_s
 
 class HistoryAppBar extends StatelessWidget {
   final VoidCallback onBack;
-  final VoidCallback onCalendar;
+
 
   const HistoryAppBar({
     super.key,
     required this.onBack,
-    required this.onCalendar,
   });
 
   @override
@@ -20,14 +19,6 @@ class HistoryAppBar extends StatelessWidget {
         CircleIconButton(
           icon: Icons.arrow_back,
           onTap: onBack,
-          color: Theme.of(context).colorScheme.primary,
-          background: Theme.of(context).colorScheme.secondary,
-        ),
-
-        // Calendar Button
-        CircleIconButton(
-          icon: Icons.calendar_month,
-          onTap: onCalendar,
           color: Theme.of(context).colorScheme.primary,
           background: Theme.of(context).colorScheme.secondary,
         ),

@@ -11,4 +11,8 @@ class AppColors {
   static  Color darkgray = Color(0xFF4A4743);
   static  Color semilightgray = Color(0xFF94938F);
   static  Color lightgray = Color(0xFFAEAEAE);
+
+  ////////
+   static const Color green = Color(0xFF4CAF50);
+  static const Color red = Color(0xFFF44336);
 }

@@ -50,7 +50,7 @@ static Widget buildAnimatedCard(
               right: 0,
               top: 0,
               child: Text(data.transactionType, 
-              style: Theme.of(context).textTheme.labelMedium!.copyWith(color: AppColors.lightred, fontWeight: FontWeight.bold, shadows: [Shadow(color: AppColors.whitecolor)]),
+              style: Theme.of(context).textTheme.labelMedium!.copyWith(color: data.transactionType != 'CREDIT' ? AppColors.lightred : AppColors.green, fontWeight: FontWeight.bold, shadows: [Shadow(color: AppColors.whitecolor)]),
               )
             ),
             Positioned(
