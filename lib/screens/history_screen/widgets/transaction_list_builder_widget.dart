@@ -15,7 +15,11 @@ class TransactionListBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: provider.monthlyTransactions.isEmpty
-          ? const Center(child: Text("No transactions found"))
+          ? Center(child: Text("No transactions found...", style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+            color: Theme.of(context).colorScheme.secondary
+          ),
+          textAlign: TextAlign.center,
+          ))
           : SingleChildScrollView(
               child: Column(
                 children: provider.monthlyTransactions

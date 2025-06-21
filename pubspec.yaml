@@ -46,6 +46,8 @@ dependencies:
   syncfusion_flutter_charts: ^29.2.10
   flutter_gemini: ^3.0.0
   http: ^1.4.0
+  decimal: ^2.3.3
+  fl_chart: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

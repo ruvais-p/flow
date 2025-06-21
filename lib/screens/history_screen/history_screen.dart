@@ -1,9 +1,8 @@
-
 import 'package:flow/screens/history_screen/functions/month_list_function.dart';
 import 'package:flow/screens/history_screen/provider/history_provider.dart';
 import 'package:flow/screens/history_screen/widgets/date_controller_widget.dart';
 import 'package:flow/screens/history_screen/widgets/donugt_chart_widget.dart';
-import 'package:flow/screens/history_screen/widgets/history_appbar_widget.dart';
+import 'package:flow/screens/history_screen/widgets/history_appbar_methode.dart';
 import 'package:flow/screens/history_screen/widgets/option_selector_widget.dart';
 import 'package:flow/screens/history_screen/widgets/transaction_list_builder_widget.dart';
 import 'package:flutter/material.dart';
@@ -40,12 +39,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final chartProvider = context.watch<HistoryDataProvider>();
     final selectedChartIndex = chartProvider.selectedIndex;
     return Scaffold(
+      appBar: HistoryAppBarWidget(context),
       body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+        padding: const EdgeInsets.only(left: 20, right: 20,),
         child: Column(
           children: [
-            HistoryAppBar(onBack: () => Navigator.pop(context)),
-            const SizedBox(height: 20),
             DateControllerWidget(
               dateTitle: formattedMonthYear,
               debitedAmount: provider.totalDebited,

@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:flow/screens/history_screen/services/history_db_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flow/model/data.dart';
@@ -6,8 +7,8 @@ class HistoryDataProvider extends ChangeNotifier {
   DateTime selectedDate = DateTime.now();
   List<Data> monthlyTransactions = [];
 
-  double totalCredited = 0.0;
-  double totalDebited = 0.0;
+  Decimal totalCredited = Decimal.zero;
+  Decimal totalDebited = Decimal.zero;
 
   void setMonth(DateTime newDate) {
     selectedDate = newDate;
@@ -35,17 +36,18 @@ class HistoryDataProvider extends ChangeNotifier {
   }
 
   void calculateTotals() {
-    totalCredited = 0.0;
-    totalDebited = 0.0;
+  totalCredited = Decimal.zero;
+  totalDebited = Decimal.zero;
 
-    for (var item in monthlyTransactions) {
-      if (item.transactionType.toLowerCase() == 'credit') {
-        totalCredited += item.amount ?? 0.0;
-      } else if (item.transactionType.toLowerCase() == 'debit') {
-        totalDebited += item.amount ?? 0.0;
-      }
+  for (var item in monthlyTransactions) {
+    final amount = Decimal.parse((item.amount ?? 0.0).toString());
+    if (item.transactionType.toLowerCase() == 'credit') {
+      totalCredited += amount;
+    } else if (item.transactionType.toLowerCase() == 'debit') {
+      totalDebited += amount;
     }
   }
+}
 
   Future<void> updateCategory(int id, String newCategory) async {
     await HistoryDBServices.instance.updateTransactionCategory(id, newCategory);

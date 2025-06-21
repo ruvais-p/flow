@@ -1,7 +1,6 @@
 import 'package:flow/data/lists/chart_color_palette_list.dart';
 import 'package:flow/model/chart.dart';
 import 'package:flow/screens/history_screen/widgets/chart_headline_widget.dart';
-import 'package:flow/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
