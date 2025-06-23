@@ -22,19 +22,35 @@ class PieChartSection extends StatelessWidget {
     final creditData = convertMapToChartData(historyProvider.creditCategoryPieData);
     final debitData = convertMapToChartData(historyProvider.debitCategoryPieData);
 
+    final bool isAllDataEmpty = creditData.isEmpty && debitData.isEmpty;
+
     return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            const ChartHeadingWidget(title: "Credit Category Breakdown",),
-            BasicChartUnit(dataSet: creditData),
-            const SizedBox(height: 40),
-            const ChartHeadingWidget(title: "Debit Category Breakdown",),
-            BasicChartUnit(dataSet: debitData),
-          ],
-        ),
-      ),
+      child: isAllDataEmpty
+          ? Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: Text(
+                  "No transactions found...",
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  ChartHeadingWidget(title: "Credit Category Breakdown"),
+                  BasicChartUnit(dataSet: creditData),
+                  const SizedBox(height: 40),
+                  ChartHeadingWidget(title: "Debit Category Breakdown"),
+                  BasicChartUnit(dataSet: debitData),
+                ],
+              ),
+            ),
     );
   }
 }

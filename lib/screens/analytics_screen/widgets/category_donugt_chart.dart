@@ -1,6 +1,7 @@
 import 'package:flow/common/donugt_chart.dart';
 import 'package:flow/model/chart.dart';
 import 'package:flow/screens/analytics_screen/services/analystic_db_services.dart';
+import 'package:flow/screens/analytics_screen/widgets/chart_title_widget.dart';
 import 'package:flutter/material.dart';
 
 class YearlyCategoryChartSection extends StatefulWidget {
@@ -38,13 +39,13 @@ class _YearlyCategoryChartSectionState extends State<YearlyCategoryChartSection>
     if (_loading) return const Center(child: CircularProgressIndicator());
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text("${widget.year} - Credit by Category", style: Theme.of(context).textTheme.titleLarge),
+        ChartTitleWidget(context, "${widget.year} - Credit by Category"),
         const SizedBox(height: 12),
         BasicChartUnit(dataSet: _creditData),
         const SizedBox(height: 24),
-        Text("${widget.year} - Debit by Category", style: Theme.of(context).textTheme.titleLarge),
+        ChartTitleWidget(context, "${widget.year} - Debit by Category"),
         const SizedBox(height: 12),
         BasicChartUnit(dataSet: _debitData),
       ],

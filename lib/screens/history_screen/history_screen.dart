@@ -39,7 +39,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
     final chartProvider = context.watch<HistoryDataProvider>();
     final selectedChartIndex = chartProvider.selectedIndex;
     return Scaffold(
-      appBar: HistoryAppBarWidget(context),
+      appBar: HistoryAppBarWidget(context, provider.monthlyTransactions.isNotEmpty),
       body: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20,),
         child: Column(
