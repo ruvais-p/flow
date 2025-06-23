@@ -1,4 +1,4 @@
-import 'package:flow/common/common_elevated_button.dart';
+import 'package:flow/common/utils/common_elevated_button.dart';
 import 'package:flow/screens/signin_screen/signin_screen.dart';
 import 'package:flow/theme/strings.dart';
 import 'package:flutter/material.dart';

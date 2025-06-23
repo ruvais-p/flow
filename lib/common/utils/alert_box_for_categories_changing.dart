@@ -68,7 +68,9 @@ void showCategoryDialog(
                     selectedIndex = index;
                     HapticFeedback.selectionClick();
                   },
-                  children: categories.map((e) => Center(child: Text(e))).toList(),
+                  children: categories.map((e) => Center(child: Text(e, style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                    color: AppColors.darkgray
+                  ),))).toList(),
                 ),
               )
             ],

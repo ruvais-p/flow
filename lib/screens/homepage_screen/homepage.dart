@@ -1,5 +1,5 @@
+import 'package:flow/common/functions/select_parse_model_function.dart';
 import 'package:flow/model/data.dart';
-import 'package:flow/model/regex_models/south_indian_bank.dart';
 import 'package:flow/screens/homepage_screen/provider/provider.dart';
 import 'package:flow/screens/homepage_screen/services/homepage_db_services.dart';
 import 'package:flow/screens/homepage_screen/widgets/addressing_segment_future_builder.dart';
@@ -91,7 +91,7 @@ class _HomepageState extends State<Homepage> {
         (e) => e.map((k, v) => MapEntry(k.toString(), v)),
       ).toList();
 
-      await parseAndInsertMessages(); // Await insert
+      await parseAndInsertMessages(filterString ?? ''); // Await insert
     } on PlatformException catch (e) {
       setState(() {
         _error = "Platform Error: ${e.message}";
@@ -105,17 +105,18 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
-  Future<void> parseAndInsertMessages() async {
+  Future<void> parseAndInsertMessages(String bankCode) async {
     try {
       for (var msg in _smsMessages) {
         final body = msg['body'];
         final timestamp = msg['date'];
 
         if (body != null && timestamp != null) {
-          final parsedData = parseSouthIndianBankSms(
-            body, 
-            DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp.toString()))
-          );
+          final parsedData = selectParseBankModel(body, DateTime.fromMillisecondsSinceEpoch(timestamp), bankCode);
+          // final parsedData = parseSouthIndianBankSms(
+          //   body, 
+          //   DateTime.fromMillisecondsSinceEpoch(int.parse(timestamp.toString()))
+          // );
           
           if (parsedData != null) {
             await _databaseService.insertTransaction(

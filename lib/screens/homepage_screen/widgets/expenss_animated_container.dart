@@ -1,4 +1,4 @@
-import 'package:flow/common/alert_box_for_categories_changing.dart';
+import 'package:flow/common/utils/alert_box_for_categories_changing.dart';
 import 'package:flow/model/data.dart';
 import 'package:flow/theme/colors.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-import 'package:flow/common/donugt_chart.dart';
+import 'package:flow/common/utils/donugt_chart.dart';
 import 'package:flow/model/chart.dart';
 import 'package:flow/screens/analytics_screen/services/analystic_db_services.dart';
 import 'package:flow/screens/analytics_screen/widgets/chart_title_widget.dart';

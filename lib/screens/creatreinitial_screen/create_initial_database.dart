@@ -1,4 +1,4 @@
-import 'package:flow/model/regex_models/south_indian_bank.dart';
+import 'package:flow/common/functions/select_parse_model_function.dart';
 import 'package:flow/screens/limitset_screen/limit_set_screen.dart';
 import 'package:flow/services/database_servieces.dart';
 import 'package:flow/theme/colors.dart';
@@ -26,8 +26,9 @@ class _CreateInitialDatabaseState extends State<CreateInitialDatabase> {
   }
 
   Future<void> loadAndNavigate() async {
+    final filterString = await _databaseService.getBankCode(); // ✅ Await here
     await fetchSmsMessages();
-    await parseAndInsertMessages();
+    await parseAndInsertMessages(filterString ?? '');
 
     // Wait 2 seconds then navigate
     Future.delayed(const Duration(seconds: 1), () {
@@ -58,7 +59,7 @@ class _CreateInitialDatabaseState extends State<CreateInitialDatabase> {
       _isLoading = false;
     });
 
-    await parseAndInsertMessages();
+    await parseAndInsertMessages(filterString ?? '');
   } on PlatformException catch (e) {
     setState(() {
       _error = "Error: ${e.message}";
@@ -68,13 +69,14 @@ class _CreateInitialDatabaseState extends State<CreateInitialDatabase> {
 }
 
 
-  Future<void> parseAndInsertMessages() async {
+  Future<void> parseAndInsertMessages(String bankCode) async {
     for (var msg in _smsMessages) {
       final body = msg['body'];
       final timestamp = msg['date'];
 
       if (body != null && timestamp != null) {
-        final parsedData = parseSouthIndianBankSms(body, DateTime.fromMillisecondsSinceEpoch(timestamp));
+        final parsedData = selectParseBankModel(body, DateTime.fromMillisecondsSinceEpoch(timestamp), bankCode);
+        //final parsedData = parseSouthIndianBankSms(body, DateTime.fromMillisecondsSinceEpoch(timestamp));
         if (parsedData != null) {
           await _databaseService.insertTransaction(
             message: body,

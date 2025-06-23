@@ -1,4 +1,4 @@
-import 'package:flow/common/donugt_chart.dart';
+import 'package:flow/common/utils/donugt_chart.dart';
 import 'package:flow/model/chart.dart';
 import 'package:flow/screens/history_screen/widgets/chart_headline_widget.dart';
 import 'package:flutter/material.dart';

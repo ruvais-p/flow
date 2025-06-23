@@ -52,9 +52,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: true,
       theme: Apptheme.lightMode,
       darkTheme: Apptheme.darkMode,
-      home: HistoryScreen(),
-      //home: homeWidget,
-      //home: MessageParserPage(),
+      home: homeWidget,
     );
   }
 }

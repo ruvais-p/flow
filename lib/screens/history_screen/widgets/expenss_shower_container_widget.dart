@@ -1,5 +1,5 @@
 
-import 'package:flow/common/dialog_history.dart';
+import 'package:flow/common/utils/dialog_history.dart';
 import 'package:flow/model/data.dart';
 import 'package:flow/theme/colors.dart';
 import 'package:flutter/material.dart';
