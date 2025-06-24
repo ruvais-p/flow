@@ -1,4 +1,4 @@
-![Flow Expense Tracker Banner](https://your-image-link-here.com/banner.png)
+(https://github.com/ruvais-p/flow/blob/main/ChatGPT%20Image%20Jun%2024%2C%202025%2C%2010_40_58%20AM.png)
 
 # 💸 Flow – Tack your coin flow...
 
