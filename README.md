@@ -42,7 +42,7 @@ To add support for a new bank:
    Add your regex parsing model to:  
    ```bash
    lib/model/regex_models/
-````
+
 
 2. **Update Bank List UI**
    Add the new bank name to the selection screen:
