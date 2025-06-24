@@ -1,4 +1,4 @@
-import 'package:flow/screens/history_screen/history_screen.dart';
+import 'package:flow/screens/flash_screen.dart/flash_screen.dart';
 import 'package:flow/screens/history_screen/provider/history_provider.dart';
 import 'package:flow/screens/homepage_screen/provider/provider.dart';
 import 'package:flow/screens/welcome_screen/welcome_screen.dart';
@@ -7,13 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flow/screens/homepage_screen/homepage.dart';
 import 'package:flow/screens/creatreinitial_screen/create_initial_database.dart';
 import 'package:flow/services/database_servieces.dart';
-import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Ensure async before runApp
-
-  Gemini.init(apiKey: 'AIzaSyD4hxY9Ri5rCP9G1SnUkUyULVWPN6CotKo');
+  WidgetsFlutterBinding.ensureInitialized();
 
   int? status = await DatabaseService.instance.getUserStatus();
   int? initiated = await DatabaseService.instance.getInitiatedrStatus();
@@ -49,10 +46,10 @@ class MyApp extends StatelessWidget {
     }
 
     return MaterialApp(
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       theme: Apptheme.lightMode,
       darkTheme: Apptheme.darkMode,
-      home: homeWidget,
+      home: FlashScreen(homeWidget: homeWidget),
     );
   }
 }

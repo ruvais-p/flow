@@ -58,37 +58,53 @@ class _BankSelectionScreenState extends State<BankSelectionScreen> {
     final double largeContainerWidth = screenWidth * 0.364;
 
     return Scaffold(
-      body: Column(
-        children: [
-          const HeadlineSection(),
-          SizedBox(height: screenHeight * 0.15),
-          GestureDetector(
-            onHorizontalDragEnd: _handleSwipe,
-            child: BankCards(
-              currentIndex: currentIndex,
-              smallContainerWidth: smallContainerWidth,
-              smallContainerHeight: smallContainerHeight,
-              banks: banks,
-              largeContainerWidth: largeContainerWidth,
-              largeContainerHeight: largeContainerHeight,
+  body: LayoutBuilder(
+    builder: (context, constraints) {
+      return SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: constraints.maxHeight),
+          child: IntrinsicHeight(
+            child: Column(
+              children: [
+                const HeadlineSection(),
+                SizedBox(height: screenHeight * 0.15),
+                GestureDetector(
+                  onHorizontalDragEnd: _handleSwipe,
+                  child: BankCards(
+                    currentIndex: currentIndex,
+                    smallContainerWidth: smallContainerWidth,
+                    smallContainerHeight: smallContainerHeight,
+                    banks: banks,
+                    largeContainerWidth: largeContainerWidth,
+                    largeContainerHeight: largeContainerHeight,
+                  ),
+                ),
+                const Spacer(), // now safe
+                TextButton(
+                  onPressed: () {
+                    _databaseService.addUserBankData(
+                      banks[currentIndex], bankcodes[currentIndex]
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CreateInitialDatabase(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "Select",
+                    style: Theme.of(context).textTheme.displayLarge,
+                  ),
+                ),
+                const SizedBox(height: 60),
+              ],
             ),
           ),
-          const Spacer(),
-          TextButton(
-            onPressed: () {
-              _databaseService.addUserBankData(
-                banks[currentIndex], bankcodes[currentIndex]
-              );
-              Navigator.push(context, MaterialPageRoute(builder:(context) => CreateInitialDatabase(),));
-            },
-            child: Text(
-              "Select",
-              style: Theme.of(context).textTheme.displayLarge,
-            ),
-          ),
-          const SizedBox(height: 60),
-        ],
-      ),
-    );
+        ),
+      );
+    },
+  ),
+);
   }
 }
